@@ -1,3 +1,5 @@
+using System;
+
 namespace UnitTest
 {
     public class Calculator
@@ -12,5 +14,8 @@ namespace UnitTest
         }
 
         public int Add() => _number1 + _number2;
+        public int Subtract() => _number1 - _number2;
+        public int Multiply() => _number1 * _number2;
+        public int Divide() => _number1 / _number2;
     }
 }
