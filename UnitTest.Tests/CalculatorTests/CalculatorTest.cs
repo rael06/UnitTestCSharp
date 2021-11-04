@@ -5,11 +5,11 @@ namespace UnitTest.Tests.CalculatorTests
 {
     public class CalculatorTest
     {
-        [Fact]
-        public void Calculator_Should_Return_Minus1_When_Adds_1_And_Minus2()
+        [Theory]
+        [InlineData(3, -5, -2)]
+        [InlineData(3, 5, 8)]
+        public void Calculator_Should_Return_Correct_Result_When_Add_2_Numbers(int number1, int number2, int expected)
         {
-            const int number1 = 1;
-            const int number2 = -2;
             // Arrange
             var calculator = new Calculator(number1, number2);
 
@@ -17,49 +17,17 @@ namespace UnitTest.Tests.CalculatorTests
             var actual = calculator.Add();
 
             // Assert
-            const int expected = -1;
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void Calculator_Should_Return_0_When_Adds_1_And_Minus1()
-        {
-            // Arrange
-            const int number1 = 1;
-            const int number2 = -1;
-            var calculator = new Calculator(number1, number2);
-
-            // Act
-            var actual = calculator.Add();
-
-            // Assert
-            const int expected = 0;
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void Calculator_Should_Return_1_When_Adds_1_And_0()
-        {
-            const int number1 = 1;
-            const int number2 = 0;
-            // Arrange
-            var calculator = new Calculator(number1, number2);
-
-            // Act
-            var actual = calculator.Add();
-
-            // Assert
-            const int expected = 1;
             Assert.Equal(expected, actual);
         }
 
         // Subtract
 
-        [Fact]
-        public void Calculator_Should_Return_3_When_Subtract_1_And_Minus2()
+        [Theory]
+        [InlineData(3, -5, 8)]
+        [InlineData(3, 5, -2)]
+        public void Calculator_Should_Return_Correct_Result_When_Subtract_2_Numbers(int number1, int number2,
+            int expected)
         {
-            const int number1 = 1;
-            const int number2 = -2;
             // Arrange
             var calculator = new Calculator(number1, number2);
 
@@ -67,39 +35,6 @@ namespace UnitTest.Tests.CalculatorTests
             var actual = calculator.Subtract();
 
             // Assert
-            const int expected = 3;
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void Calculator_Should_Return_0_When_Subtract_1_And_Minus1()
-        {
-            // Arrange
-            const int number1 = 1;
-            const int number2 = -1;
-            var calculator = new Calculator(number1, number2);
-
-            // Act
-            var actual = calculator.Subtract();
-
-            // Assert
-            const int expected = 2;
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void Calculator_Should_Return_1_When_Subtract_1_And_0()
-        {
-            const int number1 = 1;
-            const int number2 = 0;
-            // Arrange
-            var calculator = new Calculator(number1, number2);
-
-            // Act
-            var actual = calculator.Subtract();
-
-            // Assert
-            const int expected = 1;
             Assert.Equal(expected, actual);
         }
 
@@ -232,7 +167,7 @@ namespace UnitTest.Tests.CalculatorTests
             void Act() => calculator.Divide();
 
             // Assert
-            var exception = Assert.Throws<DivideByZeroException>(Act);
+            Assert.Throws<DivideByZeroException>(Act);
         }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using System;
+using UnitTest.RomanToArabic.Services;
 
 namespace UnitTest
 {
-    class Program
+    internal static class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine(new RomanToArabicConverter("VI").Convert());
         }
     }
 }
