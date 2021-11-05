@@ -6,12 +6,13 @@ namespace UnitTest.RomanToArabic.Models.RomanLetterAggregate.Factories
     public class RomanLetterFactory : IRomanLetterFactory
     {
         private static RomanLetterFactory _instance;
-        public static RomanLetterFactory Instance =>
-            _instance ??= new RomanLetterFactory();
 
         private RomanLetterFactory()
         {
         }
+
+        public static RomanLetterFactory Instance =>
+            _instance ??= new RomanLetterFactory();
 
         public IRomanLetter Create(char character)
         {
