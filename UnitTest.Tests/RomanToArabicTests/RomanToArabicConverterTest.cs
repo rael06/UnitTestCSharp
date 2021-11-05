@@ -1,10 +1,11 @@
 using System;
 using UnitTest.RomanToArabic.Services;
+using UnitTest.RomanToArabic.Services.Factories;
 using Xunit;
 
 namespace UnitTest.Tests.RomanToArabicTests
 {
-    public class RomanToArabicTest
+    public class RomanToArabicConverterTest
     {
         [Theory]
         [InlineData("a")]
@@ -17,7 +18,7 @@ namespace UnitTest.Tests.RomanToArabicTests
         [InlineData("CCCC")]
         [InlineData("DD")]
         [InlineData("MMMMM")]
-        public void Should_Throw_Exception_When_Input_Is_Invalid(string input)
+        public void Should_Throw_ArgumentException_When_Input_Is_Invalid(string input)
         {
             // Arrange
             var romanToArabic = new RomanToArabicConverter(input);
@@ -44,7 +45,7 @@ namespace UnitTest.Tests.RomanToArabicTests
         public void Should_Return_Correct_Conversion_Of_Input(string input, int expected)
         {
             // Arrange
-            var romanToArabic = new RomanToArabicConverter(input);
+            var romanToArabic = ServiceFactory.Instance.Create<RomanToArabicConverter, string>(input);
 
             // Act
             var actual = romanToArabic.Convert();

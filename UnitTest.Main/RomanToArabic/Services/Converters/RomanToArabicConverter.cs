@@ -4,17 +4,18 @@ using System.Text.RegularExpressions;
 using UnitTest.RomanToArabic.Models.RomanLetterAggregate;
 using UnitTest.RomanToArabic.Models.RomanLetterAggregate.Decorators;
 using UnitTest.RomanToArabic.Models.RomanLetterAggregate.Factories;
+using UnitTest.RomanToArabic.Services.Converters;
 
 namespace UnitTest.RomanToArabic.Services
 {
-    public class RomanToArabicConverter : IRomanToArabicConverter
+    public class RomanToArabicConverter : AbstractService<string>, IRomanToArabicConverter
     {
         private readonly string _romanNumber;
 
         // Source: https://www.it-swarm-fr.com/fr/regex/comment-ne-faire-correspondre-que-des-chiffres-romains-valides-avec-une-expression-reguliere/958543079/
         private readonly Regex _validInputRegex = new("^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$");
 
-        public RomanToArabicConverter(string romanNumber)
+        public RomanToArabicConverter(string romanNumber) : base(romanNumber)
         {
             _romanNumber = romanNumber;
         }
