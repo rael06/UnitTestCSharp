@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnitTest.RomanToArabic.Models.RomanLetterAggregate;
+using UnitTest.RomanToArabic.Models.RomanDigitAggregate;
 
 namespace UnitTest.RomanToArabic.Services.Converters
 {
@@ -11,11 +11,11 @@ namespace UnitTest.RomanToArabic.Services.Converters
         private const int ArabicNumberLowerLimit = 1;
         private const int ArabicNumberUpperLimit = 4999;
 
-        private readonly List<IRomanLetter> _romanLetters = new()
+        private readonly List<IRomanDigit> _romanDigits = new()
         {
-            new RomanLetterX(),
-            new RomanLetterV(),
-            new RomanLetterI()
+            new RomanDigitX(),
+            new RomanDigitV(),
+            new RomanDigitI()
         };
 
         public ArabicToRomanConverter(int arabicNumber) : base(arabicNumber)
@@ -27,22 +27,22 @@ namespace UnitTest.RomanToArabic.Services.Converters
         {
             var conversionResult = "";
             double restOfArabicNumber = _arabicNumber;
-            foreach (var romanLetter in _romanLetters)
+            foreach (var romanDigit in _romanDigits)
             {
-                var numberOfRomanLetter = Math.Round(restOfArabicNumber / romanLetter.ArabicValue, 1);
-                for (var i = 0; i < Math.Floor(numberOfRomanLetter); i++)
+                var numberOfRomanDigit = Math.Round(restOfArabicNumber / romanDigit.ArabicValue, 1);
+                for (var i = 0; i < Math.Floor(numberOfRomanDigit); i++)
                 {
-                    conversionResult += romanLetter.Character;
-                    restOfArabicNumber -= romanLetter.ArabicValue;
+                    conversionResult += romanDigit.Character;
+                    restOfArabicNumber -= romanDigit.ArabicValue;
                 }
 
 
-                numberOfRomanLetter = Math.Round(restOfArabicNumber / romanLetter.ArabicValue, 1);
-                if (numberOfRomanLetter > 0 && numberOfRomanLetter < 1 && numberOfRomanLetter == romanLetter.FactorToTriggerPreviousRomanLetter)
+                numberOfRomanDigit = Math.Round(restOfArabicNumber / romanDigit.ArabicValue, 1);
+                if (numberOfRomanDigit > 0 && numberOfRomanDigit < 1 && numberOfRomanDigit == romanDigit.FactorToTriggerPreviousRomanDigit)
                 {
-                    conversionResult += romanLetter.PreviousRomanLetterToConsiderForArabicValueCalculation?.Character;
-                    conversionResult += romanLetter.Character;
-                    restOfArabicNumber -= romanLetter.ArabicValue;
+                    conversionResult += romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation?.Character;
+                    conversionResult += romanDigit.Character;
+                    restOfArabicNumber -= romanDigit.ArabicValue;
                 }
 
                 if (restOfArabicNumber <= 0)

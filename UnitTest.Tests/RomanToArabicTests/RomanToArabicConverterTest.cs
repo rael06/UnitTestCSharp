@@ -18,10 +18,10 @@ namespace UnitTest.Tests.RomanToArabicTests
         [InlineData("CCCC")]
         [InlineData("DD")]
         [InlineData("MMMMM")]
-        public void Should_Throw_ArgumentException_When_Input_Is_Invalid(string input)
+        public void Should_Throw_ArgumentException_When_Roman_Number_Is_Invalid(string romanNumber)
         {
             // Arrange
-            var romanToArabic = new RomanToArabicConverter(input);
+            var romanToArabic = new RomanToArabicConverter(romanNumber);
 
             // Act
             void Act() => romanToArabic.Convert();
@@ -42,16 +42,16 @@ namespace UnitTest.Tests.RomanToArabicTests
         [InlineData("MMMMCMXCIX", 4999)]
         [InlineData("MMMDCCXLIX", 3749)]
         [InlineData("MMMMDCCCLXXXVIII", 4888)]
-        public void Should_Return_Correct_Conversion_Of_Input(string input, int expected)
+        public void Should_Return_Correct_Conversion_Of_Roman_To_Arabic_Number(string romanNumber, int expectedArabicNumber)
         {
             // Arrange
-            var romanToArabic = ServiceFactory.Instance.Create<RomanToArabicConverter, string>(input);
+            var romanToArabic = ServiceFactory.Instance.Create<RomanToArabicConverter, string>(romanNumber);
 
             // Act
             var actual = romanToArabic.Convert();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(expectedArabicNumber, actual);
         }
     }
 }

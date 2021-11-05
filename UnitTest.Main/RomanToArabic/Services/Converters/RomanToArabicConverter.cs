@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using UnitTest.RomanToArabic.Models.RomanLetterAggregate;
-using UnitTest.RomanToArabic.Models.RomanLetterAggregate.Decorators;
-using UnitTest.RomanToArabic.Models.RomanLetterAggregate.Factories;
+using UnitTest.RomanToArabic.Models.RomanDigitAggregate;
+using UnitTest.RomanToArabic.Models.RomanDigitAggregate.Decorators;
+using UnitTest.RomanToArabic.Models.RomanDigitAggregate.Factories;
 using UnitTest.RomanToArabic.Services.Converters;
 
 namespace UnitTest.RomanToArabic.Services
@@ -25,36 +25,36 @@ namespace UnitTest.RomanToArabic.Services
             if (!_validInputRegex.IsMatch(_romanNumber))
                 throw new ArgumentException("Invalid input");
 
-            var romanLetters = GetRomanLetters();
+            var romanDigits = GetRomanDigits();
             var conversion = 0;
 
-            for (var i = 0; i < romanLetters.Length; i++)
+            for (var i = 0; i < romanDigits.Length; i++)
             {
-                // assign previousRomanLetter only from the second iteration
-                var previousRomanLetter =
+                // assign previousRomanDigit only from the second iteration
+                var previousRomanDigit =
                     i >= 1
-                        ? RomanLetterDecoratorFactory.Instance.Create<ComparableRomanLetter>(romanLetters[i - 1])
+                        ? RomanDigitDecoratorFactory.Instance.Create<ComparableRomanDigit>(romanDigits[i - 1])
                         : null;
 
-                var romanLetter = romanLetters[i];
-                var HasNotPreviousRomanLetterToConsiderForArabicValueCalculation =
-                    previousRomanLetter is null ||
-                    !previousRomanLetter.Compare(romanLetter.PreviousRomanLetterToConsiderForArabicValueCalculation);
+                var romanDigit = romanDigits[i];
+                var HasNotPreviousRomanDigitToConsiderForArabicValueCalculation =
+                    previousRomanDigit is null ||
+                    !previousRomanDigit.Compare(romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation);
 
-                conversion += romanLetter.ArabicValue;
-                if (HasNotPreviousRomanLetterToConsiderForArabicValueCalculation)
+                conversion += romanDigit.ArabicValue;
+                if (HasNotPreviousRomanDigitToConsiderForArabicValueCalculation)
                     continue;
-                // * 2 because we must also subtract the arabic value of the previous roman letter
+                // * 2 because we must also subtract the arabic value of the previous roman Digit
                 // added during previous iteration
                 var valueToSubtract =
-                    romanLetter.PreviousRomanLetterToConsiderForArabicValueCalculation.ArabicValue * 2;
+                    romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation.ArabicValue * 2;
                 conversion -= valueToSubtract;
             }
 
             return conversion;
         }
 
-        private IRomanLetter[] GetRomanLetters() =>
-            _romanNumber.ToCharArray().Select(RomanLetterFactory.Instance.Create).ToArray();
+        private IRomanDigit[] GetRomanDigits() =>
+            _romanNumber.ToCharArray().Select(RomanDigitFactory.Instance.Create).ToArray();
     }
 }

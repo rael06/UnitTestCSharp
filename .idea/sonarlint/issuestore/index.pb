@@ -60,7 +60,3 @@ z
 JUnitTest.Main/RomanToArabic/Services/Converters/IRomanToArabicConverter.cs,6/6/667bbb8db7613c7ea37e83299661409fe22c1c06
 g
 7UnitTest.Main/RomanToArabic/Services/AbstractService.cs,c/a/ca84314b8d23abc656704b06b86474311a13907a
-o
-?UnitTest.Tests/RomanToArabicTests/RomanToArabicConverterTest.cs,3/1/31bdef2a225f8fa75100c0bcb3fa17d1a3d6dac9
-y
-IUnitTest.Main/RomanToArabic/Services/Converters/RomanToArabicConverter.cs,b/5/b5b326054a744b230d71ae497892724e74717ea0

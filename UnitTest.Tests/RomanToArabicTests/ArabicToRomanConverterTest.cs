@@ -31,7 +31,7 @@ namespace UnitTest.Tests.RomanToArabicTests
         [InlineData(25, "XXV")]
         [InlineData(26, "XXVI")]
         [InlineData(28, "XXVIII")]
-        public void Should_Return_Arabic_To_Roman_Number_Conversion(int arabicNumber, string expected)
+        public void Should_Return_Correct_Conversion_Of_Arabic_To_Roman_Number(int arabicNumber, string expectedRomanNumber)
         {
             // Arrange
             var arabicToRomanConverter = ServiceFactory.Instance.Create<ArabicToRomanConverter, int>(arabicNumber);
@@ -40,13 +40,13 @@ namespace UnitTest.Tests.RomanToArabicTests
             var actual = arabicToRomanConverter.Convert();
 
             // Assert
-            Assert.Equal(expected, actual);
+            Assert.Equal(expectedRomanNumber, actual);
         }
 
 
         [Theory]
         [InlineData(4, "IIII")]
-        public void Should_Not(int arabicNumber, string expected)
+        public void Should_Not_Return_Invalid_Roman_Number(int arabicNumber, string unexpectedRomanNumber)
         {
             // Arrange
             var arabicToRomanConverter = ServiceFactory.Instance.Create<ArabicToRomanConverter, int>(arabicNumber);
@@ -55,22 +55,7 @@ namespace UnitTest.Tests.RomanToArabicTests
             var actual = arabicToRomanConverter.Convert();
 
             // Assert
-            Assert.NotEqual(expected, actual);
-        }
-
-        [Fact]
-        public void Should_Return_IV()
-        {
-            // Arrange
-            const int arabicNumber = 4;
-            var arabicToRomanConverter = ServiceFactory.Instance.Create<ArabicToRomanConverter, int>(arabicNumber);
-
-            // Act
-            var actual = arabicToRomanConverter.Convert();
-
-            // Assert
-            const string expected = "IV";
-            Assert.Equal(expected, actual);
+            Assert.NotEqual(unexpectedRomanNumber, actual);
         }
     }
 }
