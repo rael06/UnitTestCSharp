@@ -39,6 +39,8 @@ namespace UnitTest.Tests.RomanToArabicTests
         [InlineData("XLIX", 49)]
         [InlineData("MMMMCDXLIV", 4444)]
         [InlineData("MMMMCMXCIX", 4999)]
+        [InlineData("MMMDCCXLIX", 3749)]
+        [InlineData("MMMMDCCCLXXXVIII", 4888)]
         public void Should_Return_Correct_Conversion_Of_Input(string input, int expected)
         {
             // Arrange

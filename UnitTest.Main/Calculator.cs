@@ -1,5 +1,3 @@
-using System;
-
 namespace UnitTest
 {
     public class Calculator

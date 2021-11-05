@@ -1,7 +1,7 @@
 using System;
 using UnitTest.RomanToArabic.Models.RomanLetterAggregate.Decorators;
 
-namespace UnitTest.RomanToArabic.Models.RomanLetterAggregate.Factory
+namespace UnitTest.RomanToArabic.Models.RomanLetterAggregate.Factories
 {
     public static class RomanLetterDecoratorFactory
     {

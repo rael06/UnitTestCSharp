@@ -5,9 +5,11 @@ namespace UnitTest
 {
     internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Console.WriteLine(new RomanToArabicConverter("VI").Convert());
+            const string romanNumber = "MMMMDCCCLXXXVIII";
+            var arabicNumber = new RomanToArabicConverter(romanNumber).Convert();
+            Console.WriteLine($"The roman number: {romanNumber} is the arabic number: {arabicNumber}");
         }
     }
 }

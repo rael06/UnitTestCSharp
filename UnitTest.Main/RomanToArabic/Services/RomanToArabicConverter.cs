@@ -3,25 +3,25 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnitTest.RomanToArabic.Models.RomanLetterAggregate;
 using UnitTest.RomanToArabic.Models.RomanLetterAggregate.Decorators;
-using UnitTest.RomanToArabic.Models.RomanLetterAggregate.Factory;
+using UnitTest.RomanToArabic.Models.RomanLetterAggregate.Factories;
 
 namespace UnitTest.RomanToArabic.Services
 {
     public class RomanToArabicConverter : IRomanToArabicConverter
     {
+        private readonly string _romanNumber;
+
         // Source: https://www.it-swarm-fr.com/fr/regex/comment-ne-faire-correspondre-que-des-chiffres-romains-valides-avec-une-expression-reguliere/958543079/
-        private readonly Regex validInputRegex = new("^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$");
+        private readonly Regex _validInputRegex = new("^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$");
 
-        private readonly string _input;
-
-        public RomanToArabicConverter(string input)
+        public RomanToArabicConverter(string romanNumber)
         {
-            _input = input;
+            _romanNumber = romanNumber;
         }
 
         public int Convert()
         {
-            if (!validInputRegex.IsMatch(_input))
+            if (!_validInputRegex.IsMatch(_romanNumber))
                 throw new ArgumentException("Invalid input");
 
             var romanLetters = GetRomanLetters();
@@ -30,8 +30,8 @@ namespace UnitTest.RomanToArabic.Services
             for (var i = 0; i < romanLetters.Length; i++)
             {
                 // assign previousRomanLetter only from the second iteration
-                var previousRomanLetter = i >= 1 ?
-                    RomanLetterDecoratorFactory.Create<ComparableRomanLetter>(romanLetters[i - 1]) : null;
+                var previousRomanLetter =
+                    i >= 1 ? RomanLetterDecoratorFactory.Create<ComparableRomanLetter>(romanLetters[i - 1]) : null;
 
                 var romanLetter = romanLetters[i];
                 var HasNotPreviousRomanLetterToConsiderForArabicValueCalculation =
@@ -52,6 +52,6 @@ namespace UnitTest.RomanToArabic.Services
         }
 
         private IRomanLetter[] GetRomanLetters() =>
-            _input.ToCharArray().Select(RomanLetterFactory.Create).ToArray();
+            _romanNumber.ToCharArray().Select(RomanLetterFactory.Create).ToArray();
     }
 }
