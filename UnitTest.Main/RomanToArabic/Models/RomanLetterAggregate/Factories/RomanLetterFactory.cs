@@ -1,11 +1,23 @@
+using System;
+using System.Reflection;
+
 namespace UnitTest.RomanToArabic.Models.RomanLetterAggregate.Factories
 {
-    public static class RomanLetterFactory
+    public class RomanLetterFactory : IRomanLetterFactory
     {
-        public static IRomanLetter Create(char character)
+        private static RomanLetterFactory _instance;
+        public static RomanLetterFactory Instance =>
+            _instance ??= new RomanLetterFactory();
+
+        private RomanLetterFactory()
         {
-            return (IRomanLetter) typeof(IRomanLetter).Assembly.CreateInstance(
-                $"{typeof(IRomanLetter).Namespace}.RomanLetter{character}");
+        }
+
+        public IRomanLetter Create(char character)
+        {
+            var romanLetterDecoratorType = Assembly.GetExecutingAssembly()
+                .GetType($"{typeof(IRomanLetter).Namespace}.RomanLetter{character}");
+            return (IRomanLetter) Activator.CreateInstance(romanLetterDecoratorType);
         }
     }
 }
