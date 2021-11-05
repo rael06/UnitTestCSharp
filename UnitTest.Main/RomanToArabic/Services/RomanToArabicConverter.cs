@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnitTest.RomanToArabic.Models.RomanLetterAggregate;
+using UnitTest.RomanToArabic.Models.RomanLetterAggregate.Decorators;
 using UnitTest.RomanToArabic.Models.RomanLetterAggregate.Factory;
 
 namespace UnitTest.RomanToArabic.Services
@@ -29,13 +30,13 @@ namespace UnitTest.RomanToArabic.Services
             for (var i = 0; i < romanLetters.Length; i++)
             {
                 // assign previousRomanLetter only from the second iteration
-                var previousRomanLetter = i >= 1 ? romanLetters[i - 1] : null;
+                var previousRomanLetter = i >= 1 ?
+                    RomanLetterFactory.Create<ComparableRomanLetter>(romanLetters[i - 1]) : null;
 
                 var romanLetter = romanLetters[i];
                 var HasNotPreviousRomanLetterToConsiderForArabicValueCalculation =
                     previousRomanLetter is null ||
-                    previousRomanLetter.Character !=
-                    romanLetter.PreviousRomanLetterToConsiderForArabicValueCalculation?.Character;
+                    !previousRomanLetter.Compare(romanLetter.PreviousRomanLetterToConsiderForArabicValueCalculation);
 
                 conversion += romanLetter.ArabicValue;
                 if (HasNotPreviousRomanLetterToConsiderForArabicValueCalculation)
