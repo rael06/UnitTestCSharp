@@ -1,5 +1,6 @@
 namespace UnitTest.RomanToArabic.Models.RomanLetterAggregate.Decorators
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ComparableRomanLetter : AbstractComparableRomanLetter
     {
         public ComparableRomanLetter(IRomanLetter romanLetter)

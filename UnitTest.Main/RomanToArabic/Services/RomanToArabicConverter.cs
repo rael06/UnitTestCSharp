@@ -31,7 +31,7 @@ namespace UnitTest.RomanToArabic.Services
             {
                 // assign previousRomanLetter only from the second iteration
                 var previousRomanLetter = i >= 1 ?
-                    RomanLetterFactory.Create<ComparableRomanLetter>(romanLetters[i - 1]) : null;
+                    RomanLetterDecoratorFactory.Create<ComparableRomanLetter>(romanLetters[i - 1]) : null;
 
                 var romanLetter = romanLetters[i];
                 var HasNotPreviousRomanLetterToConsiderForArabicValueCalculation =
