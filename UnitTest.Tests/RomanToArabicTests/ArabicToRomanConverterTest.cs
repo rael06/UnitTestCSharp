@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnitTest.RomanToArabic.Services.Converters;
 using UnitTest.RomanToArabic.Services.Factories;
@@ -31,7 +32,16 @@ namespace UnitTest.Tests.RomanToArabicTests
         [InlineData(25, "XXV")]
         [InlineData(26, "XXVI")]
         [InlineData(28, "XXVIII")]
-        public void Should_Return_Correct_Conversion_Of_Arabic_To_Roman_Number(int arabicNumber, string expectedRomanNumber)
+        [InlineData(40, "XL")]
+        [InlineData(43, "XLIII")]
+        [InlineData(44, "XLIV")]
+        [InlineData(45, "XLV")]
+        [InlineData(46, "XLVI")]
+        [InlineData(48, "XLVIII")]
+        [InlineData(49, "XLIX")]
+        [InlineData(50, "L")]
+        public void Should_Return_Correct_Conversion_Of_Arabic_To_Roman_Number(int arabicNumber,
+            string expectedRomanNumber)
         {
             // Arrange
             var arabicToRomanConverter = ServiceFactory.Instance.Create<ArabicToRomanConverter, int>(arabicNumber);
@@ -43,19 +53,35 @@ namespace UnitTest.Tests.RomanToArabicTests
             Assert.Equal(expectedRomanNumber, actual);
         }
 
-
         [Theory]
-        [InlineData(4, "IIII")]
-        public void Should_Not_Return_Invalid_Roman_Number(int arabicNumber, string unexpectedRomanNumber)
+        [InlineData(0)]
+        [InlineData(5000)]
+        public void Should_Throw_ArgumentException_When_Arabic_Number_Is_Invalid(int arabicNumber)
         {
             // Arrange
             var arabicToRomanConverter = ServiceFactory.Instance.Create<ArabicToRomanConverter, int>(arabicNumber);
 
             // Act
-            var actual = arabicToRomanConverter.Convert();
+            void Act() => arabicToRomanConverter.Convert();
 
             // Assert
-            Assert.NotEqual(unexpectedRomanNumber, actual);
+            Assert.Throws<ArgumentException>(Act);
+        }
+
+        [Theory]
+        [InlineData(64, "IIII")]
+        [InlineData(30, "VV")]
+        [InlineData(43, "XXXX")]
+        public void Should_Not_Return_Invalid_Roman_Number(int arabicNumber, string expectedRomanNumberSection)
+        {
+            // Arrange
+            var arabicToRomanConverter = ServiceFactory.Instance.Create<ArabicToRomanConverter, int>(arabicNumber);
+
+            // Act
+            var conversionResult = arabicToRomanConverter.Convert();
+
+            // Assert
+            Assert.DoesNotContain(expectedRomanNumberSection, conversionResult);
         }
     }
 }

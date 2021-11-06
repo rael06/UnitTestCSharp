@@ -1,9 +1,9 @@
 namespace UnitTest.RomanToArabic.Models.RomanDigitAggregate
 {
-    public class RomanDigitC : IRomanDigit
+    public class RomanDigitC : AbstractRomanDigitUnit
     {
-        public char Character { get; } = 'C';
-        public IRomanDigit PreviousRomanDigitToConsiderForArabicValueCalculation { get; } = new RomanDigitX();
-        public int ArabicValue { get; } = 100;
+        public override char Character { get; } = 'C';
+        public override IRomanDigit PreviousRomanDigitToConsiderForArabicValueCalculation { get; } = new RomanDigitX();
+        public override int ArabicValue { get; } = 100;
     }
 }

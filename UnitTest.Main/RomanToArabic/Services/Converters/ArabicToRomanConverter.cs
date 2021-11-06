@@ -13,6 +13,7 @@ namespace UnitTest.RomanToArabic.Services.Converters
 
         private readonly List<IRomanDigit> _romanDigits = new()
         {
+            new RomanDigitL(),
             new RomanDigitX(),
             new RomanDigitV(),
             new RomanDigitI()
@@ -25,24 +26,30 @@ namespace UnitTest.RomanToArabic.Services.Converters
 
         public string Convert()
         {
+            if (_arabicNumber < ArabicNumberLowerLimit || _arabicNumber > ArabicNumberUpperLimit)
+                throw new ArgumentException("the number exceeds limits: 1 to 4999");
+
             var conversionResult = "";
             double restOfArabicNumber = _arabicNumber;
             foreach (var romanDigit in _romanDigits)
             {
-                var numberOfRomanDigit = Math.Round(restOfArabicNumber / romanDigit.ArabicValue, 1);
-                for (var i = 0; i < Math.Floor(numberOfRomanDigit); i++)
+                var numberOfRomanDigit = restOfArabicNumber / romanDigit.ArabicValue;
+                for (var i = 0; i < Math.Floor(numberOfRomanDigit) && i < romanDigit.LimitInRomanNumber; i++)
                 {
                     conversionResult += romanDigit.Character;
                     restOfArabicNumber -= romanDigit.ArabicValue;
                 }
 
 
-                numberOfRomanDigit = Math.Round(restOfArabicNumber / romanDigit.ArabicValue, 1);
-                if (numberOfRomanDigit > 0 && numberOfRomanDigit < 1 && numberOfRomanDigit == romanDigit.FactorToTriggerPreviousRomanDigit)
+                numberOfRomanDigit = restOfArabicNumber / romanDigit.ArabicValue;
+                if (numberOfRomanDigit > 0 && numberOfRomanDigit < 1 &&
+                    numberOfRomanDigit >= romanDigit.FactorToTriggerPreviousRomanDigit)
                 {
                     conversionResult += romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation?.Character;
                     conversionResult += romanDigit.Character;
-                    restOfArabicNumber -= romanDigit.ArabicValue;
+                    restOfArabicNumber -= romanDigit.ArabicValue -
+                                          (romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation
+                                              ?.ArabicValue ?? 0);
                 }
 
                 if (restOfArabicNumber <= 0)

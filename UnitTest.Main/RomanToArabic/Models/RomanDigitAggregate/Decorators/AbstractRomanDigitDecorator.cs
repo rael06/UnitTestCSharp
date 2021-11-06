@@ -5,5 +5,6 @@ namespace UnitTest.RomanToArabic.Models.RomanDigitAggregate.Decorators
         public char Character { get; }
         public IRomanDigit PreviousRomanDigitToConsiderForArabicValueCalculation { get; }
         public int ArabicValue { get; }
+        public int LimitInRomanNumber { get; }
     }
 }

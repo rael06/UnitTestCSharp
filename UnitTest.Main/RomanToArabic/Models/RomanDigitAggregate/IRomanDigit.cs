@@ -4,15 +4,15 @@ namespace UnitTest.RomanToArabic.Models.RomanDigitAggregate
 {
     public interface IRomanDigit
     {
-        public char Character { get; }
-        public IRomanDigit PreviousRomanDigitToConsiderForArabicValueCalculation { get; }
-        public int ArabicValue { get; }
+        char Character { get; }
+        IRomanDigit PreviousRomanDigitToConsiderForArabicValueCalculation { get; }
+        int ArabicValue { get; }
+        int LimitInRomanNumber { get; }
 
         public double FactorToTriggerPreviousRomanDigit =>
             PreviousRomanDigitToConsiderForArabicValueCalculation is not null
-                ? Math.Round(
-                    (double) (ArabicValue - PreviousRomanDigitToConsiderForArabicValueCalculation.ArabicValue) /
-                    ArabicValue, 1)
+                ? (double) (ArabicValue - PreviousRomanDigitToConsiderForArabicValueCalculation.ArabicValue) /
+                  ArabicValue
                 : 0;
     }
 }
