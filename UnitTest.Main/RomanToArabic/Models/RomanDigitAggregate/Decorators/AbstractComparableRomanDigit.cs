@@ -1,8 +1,8 @@
 namespace UnitTest.RomanToArabic.Models.RomanDigitAggregate.Decorators
 {
-    public abstract class AbstractComparableRomanDigit : AbstractRomanDigitDecorator
+    public abstract class AbstractComparableRomanDigit : AbstractRomanDigit
     {
-        protected IRomanDigit RomanDigit { get; init; }
-        public abstract bool Compare(IRomanDigit romanDigit);
+        protected AbstractRomanDigit RomanDigit { get; init; }
+        public abstract bool Compare(AbstractRomanDigit romanDigit);
     }
 }

@@ -54,7 +54,7 @@ namespace UnitTest.RomanToArabic.Services
             return conversion;
         }
 
-        private IRomanDigit[] GetRomanDigits() =>
+        private AbstractRomanDigit[] GetRomanDigits() =>
             _romanNumber.ToCharArray().Select(RomanDigitFactory.Instance.Create).ToArray();
     }
 }

@@ -11,8 +11,11 @@ namespace UnitTest.RomanToArabic.Services.Converters
         private const int ArabicNumberLowerLimit = 1;
         private const int ArabicNumberUpperLimit = 4999;
 
-        private readonly List<IRomanDigit> _romanDigits = new()
+        private readonly List<AbstractRomanDigit> _romanDigits = new()
         {
+            new RomanDigitM(),
+            new RomanDigitD(),
+            new RomanDigitC(),
             new RomanDigitL(),
             new RomanDigitX(),
             new RomanDigitV(),
@@ -33,29 +36,50 @@ namespace UnitTest.RomanToArabic.Services.Converters
             double restOfArabicNumber = _arabicNumber;
             foreach (var romanDigit in _romanDigits)
             {
-                var numberOfRomanDigit = restOfArabicNumber / romanDigit.ArabicValue;
-                for (var i = 0; i < Math.Floor(numberOfRomanDigit) && i < romanDigit.LimitInRomanNumber; i++)
-                {
-                    conversionResult += romanDigit.Character;
-                    restOfArabicNumber -= romanDigit.ArabicValue;
-                }
+                var fractionOfRomanDigitsToAdd = restOfArabicNumber / romanDigit.ArabicValue;
+                var sectionSizeOfRomanDigitsToAdd =
+                    Math.Min(Math.Floor(fractionOfRomanDigitsToAdd), romanDigit.SectionSizeLimit);
 
+                conversionResult = AddRomanDigits(sectionSizeOfRomanDigitsToAdd, conversionResult, romanDigit,
+                    ref restOfArabicNumber);
 
-                numberOfRomanDigit = restOfArabicNumber / romanDigit.ArabicValue;
-                if (numberOfRomanDigit > 0 && numberOfRomanDigit < 1 &&
-                    numberOfRomanDigit >= romanDigit.FactorToTriggerPreviousRomanDigit)
+                var fractionOfRomanDigitToAdd = restOfArabicNumber / romanDigit.ArabicValue;
+                var hasPartialRomanDigitToAdd = romanDigit.FactorToTriggerPreviousRomanDigit is not null
+                    ? fractionOfRomanDigitToAdd >=
+                      romanDigit.FactorToTriggerPreviousRomanDigit
+                    : false;
+
+                if (hasPartialRomanDigitToAdd)
                 {
-                    conversionResult += romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation?.Character;
-                    conversionResult += romanDigit.Character;
-                    restOfArabicNumber -= romanDigit.ArabicValue -
-                                          (romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation
-                                              ?.ArabicValue ?? 0);
+                    conversionResult = AddPartialRomanDigit(conversionResult, romanDigit, ref restOfArabicNumber);
                 }
 
                 if (restOfArabicNumber <= 0)
                     break;
             }
 
+            return conversionResult;
+        }
+
+        private static string AddRomanDigits(double sectionSizeOfRomanDigitToAdd, string conversionResult,
+            AbstractRomanDigit romanDigit, ref double restOfArabicNumber)
+        {
+            for (var i = 0; i < sectionSizeOfRomanDigitToAdd; i++)
+            {
+                conversionResult += romanDigit.Character;
+                restOfArabicNumber -= romanDigit.ArabicValue;
+            }
+
+            return conversionResult;
+        }
+
+        private static string AddPartialRomanDigit(string conversionResult, AbstractRomanDigit romanDigit,
+            ref double restOfArabicNumber)
+        {
+            conversionResult += romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation.Character;
+            conversionResult += romanDigit.Character;
+            restOfArabicNumber -= romanDigit.ArabicValue -
+                                  romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation.ArabicValue;
             return conversionResult;
         }
     }

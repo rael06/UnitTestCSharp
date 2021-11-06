@@ -14,11 +14,11 @@ namespace UnitTest.RomanToArabic.Models.RomanDigitAggregate.Factories
         public static RomanDigitFactory Instance =>
             _instance ??= new RomanDigitFactory();
 
-        public IRomanDigit Create(char character)
+        public AbstractRomanDigit Create(char character)
         {
             var romanDigitDecoratorType = Assembly.GetExecutingAssembly()
-                .GetType($"{typeof(IRomanDigit).Namespace}.RomanDigit{character}");
-            return (IRomanDigit) Activator.CreateInstance(romanDigitDecoratorType);
+                .GetType($"{typeof(AbstractRomanDigit).Namespace}.RomanDigit{character}");
+            return (AbstractRomanDigit) Activator.CreateInstance(romanDigitDecoratorType);
         }
     }
 }

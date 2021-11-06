@@ -15,8 +15,8 @@ namespace UnitTest.RomanToArabic.Models.RomanDigitAggregate.Factories
             _instance ??= new RomanDigitDecoratorFactory();
 
 
-        public T Create<T>(IRomanDigit romanDigit)
-            where T : AbstractRomanDigitDecorator
+        public T Create<T>(AbstractRomanDigit romanDigit)
+            where T : AbstractRomanDigit
         {
             return (T) Activator.CreateInstance(typeof(T), romanDigit);
         }
