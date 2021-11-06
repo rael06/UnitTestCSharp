@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnitTest.RomanToArabic.Models.RomanDigitAggregate;
+using UnitTest.Utils;
 
 namespace UnitTest.RomanToArabic.Services.Converters
 {
@@ -55,7 +56,8 @@ namespace UnitTest.RomanToArabic.Services.Converters
 
                 var hasPartialRomanDigitToAdd =
                     romanDigit.FactorToTriggerPreviousRomanDigit is not null &&
-                    numberOfRomanDigitsToAdd - (double) romanDigit.FactorToTriggerPreviousRomanDigit >= -0.0001;
+                    numberOfRomanDigitsToAdd.IsGreaterOrEqualWithToleranceThan(
+                        (double) romanDigit.FactorToTriggerPreviousRomanDigit);
 
                 if (hasPartialRomanDigitToAdd)
                 {
