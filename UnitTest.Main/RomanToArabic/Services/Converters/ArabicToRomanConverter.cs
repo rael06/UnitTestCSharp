@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnitTest.RomanToArabic.Models.RomanDigitAggregate;
 
 namespace UnitTest.RomanToArabic.Services.Converters
@@ -32,55 +33,61 @@ namespace UnitTest.RomanToArabic.Services.Converters
             if (_arabicNumber < ArabicNumberLowerLimit || _arabicNumber > ArabicNumberUpperLimit)
                 throw new ArgumentException("the number exceeds limits: 1 to 4999");
 
-            var conversionResult = "";
             double restOfArabicNumber = _arabicNumber;
-            foreach (var romanDigit in _romanDigits)
+
+            return _romanDigits.Aggregate(string.Empty, (conversionResult, romanDigit) =>
             {
-                var fractionOfRomanDigitsToAdd = restOfArabicNumber / romanDigit.ArabicValue;
+                var numberOfRomanDigitsToAdd = restOfArabicNumber / romanDigit.ArabicValue;
+
+                var noRomanDigitToAdd = numberOfRomanDigitsToAdd < romanDigit.FactorToTriggerPreviousRomanDigit;
+                if (noRomanDigitToAdd)
+                    return conversionResult;
+
                 var sectionSizeOfRomanDigitsToAdd =
-                    Math.Min(Math.Floor(fractionOfRomanDigitsToAdd), romanDigit.SectionSizeLimit);
+                    Math.Min((int) numberOfRomanDigitsToAdd, romanDigit.SectionSizeLimit);
 
-                conversionResult = AddRomanDigits(sectionSizeOfRomanDigitsToAdd, conversionResult, romanDigit,
-                    ref restOfArabicNumber);
+                if (sectionSizeOfRomanDigitsToAdd > 0)
+                {
+                    AddRomanDigits(ref conversionResult, ref restOfArabicNumber, sectionSizeOfRomanDigitsToAdd,
+                        romanDigit);
+                    numberOfRomanDigitsToAdd -= sectionSizeOfRomanDigitsToAdd;
+                }
 
-                var fractionOfRomanDigitToAdd = restOfArabicNumber / romanDigit.ArabicValue;
-                var hasPartialRomanDigitToAdd = romanDigit.FactorToTriggerPreviousRomanDigit is not null
-                    ? fractionOfRomanDigitToAdd >=
-                      romanDigit.FactorToTriggerPreviousRomanDigit
-                    : false;
+                var hasPartialRomanDigitToAdd =
+                    romanDigit.FactorToTriggerPreviousRomanDigit is not null &&
+                    numberOfRomanDigitsToAdd - (double) romanDigit.FactorToTriggerPreviousRomanDigit >= -0.0001;
 
                 if (hasPartialRomanDigitToAdd)
                 {
-                    conversionResult = AddPartialRomanDigit(conversionResult, romanDigit, ref restOfArabicNumber);
+                    AddPartialRomanDigit(ref conversionResult, ref restOfArabicNumber, romanDigit);
                 }
 
-                if (restOfArabicNumber <= 0)
-                    break;
-            }
-
-            return conversionResult;
+                return conversionResult;
+            });
         }
 
-        private static string AddRomanDigits(double sectionSizeOfRomanDigitToAdd, string conversionResult,
-            AbstractRomanDigit romanDigit, ref double restOfArabicNumber)
+        private static void AddRomanDigits(
+            ref string conversionResult,
+            ref double restOfArabicNumber,
+            int sectionSizeOfRomanDigitToAdd,
+            AbstractRomanDigit romanDigit)
         {
             for (var i = 0; i < sectionSizeOfRomanDigitToAdd; i++)
             {
                 conversionResult += romanDigit.Character;
                 restOfArabicNumber -= romanDigit.ArabicValue;
             }
-
-            return conversionResult;
         }
 
-        private static string AddPartialRomanDigit(string conversionResult, AbstractRomanDigit romanDigit,
-            ref double restOfArabicNumber)
+        private static void AddPartialRomanDigit(
+            ref string conversionResult,
+            ref double restOfArabicNumber,
+            AbstractRomanDigit romanDigit)
         {
             conversionResult += romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation.Character;
             conversionResult += romanDigit.Character;
             restOfArabicNumber -= romanDigit.ArabicValue -
                                   romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation.ArabicValue;
-            return conversionResult;
         }
     }
 }
