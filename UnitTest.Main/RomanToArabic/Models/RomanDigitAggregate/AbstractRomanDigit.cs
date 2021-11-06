@@ -6,10 +6,10 @@ namespace UnitTest.RomanToArabic.Models.RomanDigitAggregate
     {
         protected AbstractRomanDigit()
         {
-            FactorToTriggerPreviousRomanDigit = PreviousRomanDigitToConsiderForArabicValueCalculation is not null
-                ? (double) (ArabicValue - PreviousRomanDigitToConsiderForArabicValueCalculation.ArabicValue) /
-                  ArabicValue
-                : null;
+            if (PreviousRomanDigitToConsiderForArabicValueCalculation is not null)
+                FactorToTriggerPreviousRomanDigit =
+                    (double) (ArabicValue - PreviousRomanDigitToConsiderForArabicValueCalculation.ArabicValue) /
+                    ArabicValue;
         }
 
         public abstract char Character { get; }
