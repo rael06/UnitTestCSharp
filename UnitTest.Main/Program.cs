@@ -9,11 +9,12 @@ namespace UnitTest
     {
         private static void Main(string[] args)
         {
-            const string romanNumber = "MMMMDCCCLXXXVIII";
-            var arabicNumber = ServiceFactory.Instance.Create<RomanToArabicConverter, string>(romanNumber).Convert();
-            var rmn = ServiceFactory.Instance.Create<ArabicToRomanConverter, int>(4).Convert();
-            Console.WriteLine($"The roman number: {romanNumber} is the arabic number: {arabicNumber}");
-            Console.WriteLine($"The arabic number: {4} is the roman number: {rmn}");
+            const string inputRomanNumber = "MMMMDCCCLXXXVIII";
+            var arabicNumber = ServiceFactory.Instance.Create<RomanToArabicConverter>(inputRomanNumber).Convert();
+            Console.WriteLine($"The roman number: {inputRomanNumber} is the arabic number: {arabicNumber}");
+
+            var romanNumber = ServiceFactory.Instance.Create<ArabicToRomanConverter>(arabicNumber).Convert();
+            Console.WriteLine($"The arabic number: {arabicNumber} is the roman number: {romanNumber}");
         }
     }
 }

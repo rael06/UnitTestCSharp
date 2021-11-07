@@ -6,7 +6,7 @@ using UnitTest.Utils;
 
 namespace UnitTest.RomanToArabic.Services.Converters
 {
-    public class ArabicToRomanConverter : AbstractService<int>, IArabicToRomanConverter
+    public class ArabicToRomanConverter : AbstractArabicToRomanConverter
     {
         private readonly int _arabicNumber;
 
@@ -29,7 +29,7 @@ namespace UnitTest.RomanToArabic.Services.Converters
             _arabicNumber = arabicNumber;
         }
 
-        public string Convert()
+        public override string Convert()
         {
             if (_arabicNumber < ArabicNumberLowerLimit || _arabicNumber > ArabicNumberUpperLimit)
                 throw new ArgumentException("the number exceeds limits: 1 to 4999");

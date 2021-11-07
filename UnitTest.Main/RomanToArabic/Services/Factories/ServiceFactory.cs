@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace UnitTest.RomanToArabic.Services.Factories
 {
@@ -12,7 +14,7 @@ namespace UnitTest.RomanToArabic.Services.Factories
 
         public static ServiceFactory Instance => _instance ??= new ServiceFactory();
 
-        public T Create<T, P>(P constructorParameter) where T : AbstractService<P>
+        public T Create<T>(object constructorParameter) where T : AbstractService
         {
             return (T) Activator.CreateInstance(typeof(T), constructorParameter);
         }

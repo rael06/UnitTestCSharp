@@ -8,7 +8,7 @@ using UnitTest.RomanToArabic.Services.Converters;
 
 namespace UnitTest.RomanToArabic.Services
 {
-    public class RomanToArabicConverter : AbstractService<string>, IRomanToArabicConverter
+    public class RomanToArabicConverter : AbstractRomanToArabicConverter
     {
         private readonly string _romanNumber;
 
@@ -20,7 +20,7 @@ namespace UnitTest.RomanToArabic.Services
             _romanNumber = romanNumber;
         }
 
-        public int Convert()
+        public override int Convert()
         {
             if (!_validInputRegex.IsMatch(_romanNumber))
                 throw new ArgumentException("Invalid input");

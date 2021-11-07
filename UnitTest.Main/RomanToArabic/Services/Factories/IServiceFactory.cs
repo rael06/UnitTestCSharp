@@ -4,6 +4,6 @@ namespace UnitTest.RomanToArabic.Services.Factories
 {
     public interface IServiceFactory
     {
-        T Create<T, P>(P constructorParameter) where T : AbstractService<P>;
+        T Create<T>(object constructorParameter) where T : AbstractService;
     }
 }

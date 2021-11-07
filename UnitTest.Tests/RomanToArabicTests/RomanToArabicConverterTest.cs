@@ -45,7 +45,7 @@ namespace UnitTest.Tests.RomanToArabicTests
         public void Should_Return_Correct_Conversion_Of_Roman_To_Arabic_Number(string romanNumber, int expectedArabicNumber)
         {
             // Arrange
-            var romanToArabic = ServiceFactory.Instance.Create<RomanToArabicConverter, string>(romanNumber);
+            var romanToArabic = ServiceFactory.Instance.Create<RomanToArabicConverter>(romanNumber);
 
             // Act
             var actual = romanToArabic.Convert();

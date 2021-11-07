@@ -2,7 +2,7 @@ using System;
 
 namespace UnitTest.Utils
 {
-    public static class DoubleExtension
+    public static class DoubleComparisonExtension
     {
         private const double _tolerance = 1E-15d;
         public static bool IsEqualWithToleranceTo(this double value1, double value2, double tolerance = _tolerance) =>
