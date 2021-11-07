@@ -21,7 +21,7 @@ namespace UnitTest.Tests.RomanToArabicTests
         public void Should_Throw_ArgumentException_When_Roman_Number_Is_Invalid(string romanNumber)
         {
             // Arrange
-            var romanToArabic = new RomanToArabicConverter(romanNumber);
+            var romanToArabic = ServiceFactory.Instance.Create<RomanToArabicConverter>().Init(romanNumber);
 
             // Act
             void Act() => romanToArabic.Convert();
@@ -45,7 +45,7 @@ namespace UnitTest.Tests.RomanToArabicTests
         public void Should_Return_Correct_Conversion_Of_Roman_To_Arabic_Number(string romanNumber, int expectedArabicNumber)
         {
             // Arrange
-            var romanToArabic = ServiceFactory.Instance.Create<RomanToArabicConverter>(romanNumber);
+            var romanToArabic = ServiceFactory.Instance.Create<RomanToArabicConverter>().Init(romanNumber);
 
             // Act
             var actual = romanToArabic.Convert();

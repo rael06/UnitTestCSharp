@@ -14,13 +14,13 @@ namespace UnitTest.Tests.RomanToArabicTests
         [InlineData(4999, "MMMMCMXCIX")]
         public void Should_Convert_Arabic_To_Roman_Number_Properly(int arabicNumber, string romanNumber)
         {
-            var arabicToRomanConverter = ServiceFactory.Instance.Create<ArabicToRomanConverter>(arabicNumber);
+            var arabicToRomanConverter = ServiceFactory.Instance.Create<ArabicToRomanConverter>().Init(arabicNumber);
             var actualRomanNumber = arabicToRomanConverter.Convert();
 
             Assert.Equal(romanNumber, actualRomanNumber);
 
             var romanToArabicConverter =
-                ServiceFactory.Instance.Create<RomanToArabicConverter>(actualRomanNumber);
+                ServiceFactory.Instance.Create<RomanToArabicConverter>().Init(romanNumber);
             var actualArabicNumber = romanToArabicConverter.Convert();
 
             Assert.Equal(arabicNumber, actualArabicNumber);

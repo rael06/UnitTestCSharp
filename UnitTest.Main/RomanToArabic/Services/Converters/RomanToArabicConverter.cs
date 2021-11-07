@@ -8,19 +8,26 @@ using UnitTest.RomanToArabic.Services.Converters;
 
 namespace UnitTest.RomanToArabic.Services
 {
-    public class RomanToArabicConverter : AbstractRomanToArabicConverter
+    public class RomanToArabicConverter : IRomanToArabicConverter
     {
         private readonly string _romanNumber;
 
         // Source: https://www.it-swarm-fr.com/fr/regex/comment-ne-faire-correspondre-que-des-chiffres-romains-valides-avec-une-expression-reguliere/958543079/
         private readonly Regex _validInputRegex = new("^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$");
 
-        public RomanToArabicConverter(string romanNumber) : base(romanNumber)
+        private RomanToArabicConverter(string romanNumber)
         {
             _romanNumber = romanNumber;
         }
 
-        public override int Convert()
+        public RomanToArabicConverter()
+        {
+        }
+
+        public IConverter<string, int> Init(string romanNumber)
+            => new RomanToArabicConverter(romanNumber);
+
+        public int Convert()
         {
             if (!_validInputRegex.IsMatch(_romanNumber))
                 throw new ArgumentException("Invalid input");

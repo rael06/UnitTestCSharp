@@ -58,9 +58,3 @@ LUnitTest.Main/RomanToArabic/Models/RomanDigitAggregate/AbstractRomanDigit.cs,6
 0UnitTest.Tests/UtilsTests/DoubleExtensionTest.cs,0/b/0b35f1e3e77d66ce2877d0d671356f5cc3d2de73
 V
 &UnitTest.Main/Utils/DoubleExtension.cs,9/7/979d3021b67008c182d28c9ddbc717615bc8797a
-Å
-QUnitTest.Main/RomanToArabic/Services/Converters/AbstractArabicToRomanConverter.cs,4/6/46ee1667018507c4c0fe19554cb31aab7d7df1e1
-Å
-QUnitTest.Main/RomanToArabic/Services/Converters/AbstractRomanToArabicConverter.cs,9/a/9a787f1fd8fe5d5c46b54c570f790a34d9acabb9
-y
-IUnitTest.Main/RomanToArabic/Services/Converters/ArabicToRomanConverter.cs,4/2/4261409423e2aa48c1aae741ee3ad0b25609e073

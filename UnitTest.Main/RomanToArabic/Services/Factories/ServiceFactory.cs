@@ -14,14 +14,9 @@ namespace UnitTest.RomanToArabic.Services.Factories
 
         public static ServiceFactory Instance => _instance ??= new ServiceFactory();
 
-        public T Create<T>(object constructorParameter) where T : AbstractService
+        public T Create<T>() where T : IService, new()
         {
-            return (T) Activator.CreateInstance(typeof(T), constructorParameter);
-        }
-
-        public T Create<T>() where T : AbstractService
-        {
-            return (T) Activator.CreateInstance(typeof(T));
+            return new();
         }
     }
 }
