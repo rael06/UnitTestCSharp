@@ -37,19 +37,22 @@ namespace UnitTest.RomanToArabic.Services
 
             for (var i = 0; i < romanDigits.Length; i++)
             {
-                // assign previousRomanDigit only from the second iteration
-                var previousRomanDigit =
-                    i >= 1
-                        ? RomanDigitDecoratorFactory.Instance.Create<ComparableRomanDigit>(romanDigits[i - 1])
-                        : null;
+                ComparableRomanDigit previousRomanDigit = null;
+
+                // set the previous roman digit only if it exists
+                if (i >= 1)
+                {
+                    previousRomanDigit =
+                        RomanDigitDecoratorFactory.Instance.Create<ComparableRomanDigit>(romanDigits[i - 1]);
+                }
 
                 var romanDigit = romanDigits[i];
-                var HasNotPreviousRomanDigitToConsiderForArabicValueCalculation =
+                var hasNotPreviousRomanDigitToConsiderForArabicValueCalculation =
                     previousRomanDigit is null ||
                     !previousRomanDigit.Compare(romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation);
 
                 conversion += romanDigit.ArabicValue;
-                if (HasNotPreviousRomanDigitToConsiderForArabicValueCalculation)
+                if (hasNotPreviousRomanDigitToConsiderForArabicValueCalculation)
                     continue;
                 // * 2 because we must also subtract the arabic value of the previous roman Digit
                 // added during previous iteration

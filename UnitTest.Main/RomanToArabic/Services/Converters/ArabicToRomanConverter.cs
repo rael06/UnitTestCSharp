@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnitTest.RomanToArabic.Models.RomanDigitAggregate;
 using UnitTest.Utils;
 
@@ -43,20 +44,20 @@ namespace UnitTest.RomanToArabic.Services.Converters
 
             double restOfArabicNumber = _arabicNumber;
 
-            return _romanDigits.Aggregate(string.Empty, (conversionResult, romanDigit) =>
+            return _romanDigits.Aggregate(new StringBuilder(), (conversionResultBuilder, romanDigit) =>
             {
                 var numberOfRomanDigitsToAdd = restOfArabicNumber / romanDigit.ArabicValue;
 
                 var noRomanDigitToAdd = numberOfRomanDigitsToAdd < romanDigit.FactorToTriggerPreviousRomanDigit;
                 if (noRomanDigitToAdd)
-                    return conversionResult;
+                    return conversionResultBuilder;
 
                 var sectionSizeOfRomanDigitsToAdd =
                     Math.Min((int) numberOfRomanDigitsToAdd, romanDigit.SectionSizeLimit);
 
                 if (sectionSizeOfRomanDigitsToAdd > 0)
                 {
-                    AddRomanDigits(ref conversionResult, ref restOfArabicNumber, sectionSizeOfRomanDigitsToAdd,
+                    AddRomanDigits(ref conversionResultBuilder, ref restOfArabicNumber, sectionSizeOfRomanDigitsToAdd,
                         romanDigit);
                     numberOfRomanDigitsToAdd -= sectionSizeOfRomanDigitsToAdd;
                 }
@@ -68,33 +69,33 @@ namespace UnitTest.RomanToArabic.Services.Converters
 
                 if (hasPartialRomanDigitToAdd)
                 {
-                    AddPartialRomanDigit(ref conversionResult, ref restOfArabicNumber, romanDigit);
+                    AddPartialRomanDigit(ref conversionResultBuilder, ref restOfArabicNumber, romanDigit);
                 }
 
-                return conversionResult;
-            });
+                return conversionResultBuilder;
+            }).ToString();
         }
 
         private static void AddRomanDigits(
-            ref string conversionResult,
+            ref StringBuilder conversionResult,
             ref double restOfArabicNumber,
             int sectionSizeOfRomanDigitToAdd,
             AbstractRomanDigit romanDigit)
         {
             for (var i = 0; i < sectionSizeOfRomanDigitToAdd; i++)
             {
-                conversionResult += romanDigit.Character;
+                conversionResult.Append(romanDigit.Character);
                 restOfArabicNumber -= romanDigit.ArabicValue;
             }
         }
 
         private static void AddPartialRomanDigit(
-            ref string conversionResult,
+            ref StringBuilder conversionResult,
             ref double restOfArabicNumber,
             AbstractRomanDigit romanDigit)
         {
-            conversionResult += romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation.Character;
-            conversionResult += romanDigit.Character;
+            conversionResult.Append(romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation.Character);
+            conversionResult.Append(romanDigit.Character);
             restOfArabicNumber -= romanDigit.ArabicValue -
                                   romanDigit.PreviousRomanDigitToConsiderForArabicValueCalculation.ArabicValue;
         }
